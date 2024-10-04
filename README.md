@@ -41,31 +41,55 @@ high). By how much would we have increased the likelihood that the median is a
 Assume $p_{i}$ is the probability a random subset of 3 will generate a median 
 that is within the bounds of this middle half of the array.
 
-$$p_{i} = $\frac{Partial}{Total}$
+$$p_{i} = \frac{Partial}{Total}$$
 
-There's 6 total ways for the three elements to be selected, so $\binom{3}{n} = \frac{n*(n-1)*(n-2)}{6}$. This will be put in the denominator of the $p_{i}$ equation. If the first value we pick is derived from (i-1) and the third value is (i+1), ..., $n$, then to pick the second value would be (i-1)*(i+1). This will be the numerator of the $p_{i}$ equation.
+There's 6 total ways for the three elements to be selected, so 
+$\binom{3}{n} = \frac{n(n-1)(n-2)}{6}$. This will be put in the denominator of 
+the $p_{i}$ equation. If the first value we pick is derived from $(i-1)$ and the 
+third value is $(i+1), \ldots, n$, then to pick the second value would be 
+$(i-1)(i+1)$. This will be the numerator of the $p_{i}$ equation.
 
 Put together we get this formula:
 
-$$p_{i} = \frac{6*(i-1)*(n-i)}{n*(n-1)*(n-2)}$$
+$$p_{i} = \frac{6(i-1)(n-i)}{n(n-1)(n-2)}$$
 
-If we consider a good pivot to be within the bounds of $n/4 \le i \le 3n/4$, we can use the following integral (see the source) to determine how much better the median of the three values are.
+If we consider a good pivot to be within the bounds of $n/4 \le i \le 3n/4$, 
+we can use the following integral (see the source) to determine how much better 
+the median of the three values are.
 
-$$(\int_{n/3}^{3n/4} \frac{6*(-n^2 + nx + x - n)}{n*(n-1)*(n-2)} \; dx)$$
+$$\sum_{i=n/4}^{3n/4} \approx \int_{n/4}^{3n/4} \frac{6*(-x^2 + nx + x - n)}{n(n-1)(n-2)} \; dx$$
 
-Simplified:
-<!--TODO: solve the numerator portion using problem c from the source-->
-$$\frac{}{n*(n-1)*(n-2)}$$
+Pull out non-x terms and rewrite:
+<!--TODO: everything below this-->
+$$\frac{6}{n(n-1)(n-2)} \int_{n/4}^{3n/4} (-x^2 + (n + 1)x - n) \; dx$$
 
-<!--TODO: Write an equation with as the limit approaches infinity, and
-            describe how that constant is greater than 1/3 - Therefore 
-            representing that the median value in the set is more likely
-            to within the "good pivot" range than the other two values. -->
+Integrate:
+
+$$\frac{6}{n(n-1)(n-2)} \left[-\frac{x^3}{3} + \frac{(n+1)n^2}{2} - nx\right]_{n/4}^{3n/4}$$
+
+- Upper ($x=3n/4$): $-\frac{(3n/4)^3}{3} + \frac{(n+1)(3n/4)^2}{2} - n(\frac{3n}{4})$
+- Lower ($x=n/4$): $-\frac{(n/4)^3}{3} + \frac{(n+1)(n/4)^2}{2} - n(\frac{n}{4})$
+
+Simplify:
+
+- Upper (simplified): $-\frac{9n^3}{64} + \frac{9(n+1)n^2}{32} - \frac{3n^2}{4}$
+- Lower (simplified): $-\frac{(n/4)^3}{3} + \frac{(n+1)(n/4)^2}{2} - \frac{n^2}{4}$
+
+Plug in Upper and Lower:
+
+$$\frac{6}{n(n-1)(n-2)} (Upper - Lower)$$
+
+$$\frac{6}{n(n-1)(n-2)} (-\frac{9n^3}{64} + \frac{9(n+1)n^2}{32} - \frac{3n^2}{4} +\frac{(n/4)^3}{3} - \frac{(n+1)(n/4)^2}{2} + \frac{n^2}{4})$$
+
+Simplify:
+
+$$\frac{6(-\frac{13n^3}{96} + \frac{(n+1)n^2}{4} + \frac{n^2}{2})}{n(n-1)(n-2)}$$
+
 Analyzing what happens as $n$ approaches $\infty$:
 
-$$\lim_{x \to \infty} (Above equation) = \frac{11}{16}$$
+$$\lim_{x \to \infty} \frac{6(-\frac{13n^3}{96} + \frac{(n+1)n^2}{4} + \frac{n^2}{2})}{n(n-1)(n-2)} = \frac{11}{16}$$
 
-As $n$ approaches infinity, we can see that it approaches a constant factor of $\frac{11}{16}$ which is greater than $\frac{1}{2}$. The reason why it is important that this constant is greater than $\frac{1}{2}$ is because it shows the median-of-3 truly does have higher odds of being within a "good pivot" range (being within the $n/4 \le i \le 3n/4$ range of the array) than any randomly chosen element.
+As $n$ approaches infinity, we can see that it approaches a constant factor of $\frac{11}{16}$ which is greater than $\frac{1}{2}$. The reason why it is important that this constant is greater than $\frac{1}{2}$ is because it shows the median-of-3 truly does have higher odds of being within a "good pivot" range (being within the $\frac{n}{4} \le i \le \frac{3n}{4}$ range of the array) than any randomly chosen element.
 
 
 # Sources
