@@ -25,7 +25,7 @@ might help with the notation for mathematical expressions.
 # My Quicksort Pivots Analysis
 
 If we were just to randomly pick a pivot (which I am lumping in choosing the 
-first element or last element with this), this implies that we know nothing 
+first element or last element in with this), this implies that we know nothing 
 about the data and we are just arbitrarily picking a pivot. Calculating the 
 median of three values is already much better because we are actually looking 
 at the data and influencing our decision based on what we see. If picking a 
@@ -49,7 +49,7 @@ the $p_{i}$ equation. If the first value we pick is derived from $(i-1)$ and the
 third value is $(i+1), \ldots, n$, then to pick the second value would be 
 $(i-1)(i+1)$. This will be the numerator of the $p_{i}$ equation.
 
-Put together we get this formula:
+#### Put together we get this formula:
 
 $$p_{i} = \frac{6(i-1)(n-i)}{n(n-1)(n-2)}$$
 
@@ -57,39 +57,41 @@ If we consider a good pivot to be within the bounds of $n/4 \le i \le 3n/4$,
 we can use the following integral (see the source) to determine how much better 
 the median of the three values are.
 
-$$\sum_{i=n/4}^{3n/4} \approx \int_{n/4}^{3n/4} \frac{6*(-x^2 + nx + x - n)}{n(n-1)(n-2)} \; dx$$
+$$\sum_{i=n/4}^{3n/4} p_{i} \approx \int_{n/4}^{3n/4} \frac{6*(-x^2 + nx + x - n)}{n(n-1)(n-2)} \; dx$$
 
-Pull out non-x terms and rewrite:
-<!--TODO: everything below this-->
+#### Pull out non-x terms and rewrite:
+
 $$\frac{6}{n(n-1)(n-2)} \int_{n/4}^{3n/4} (-x^2 + (n + 1)x - n) \; dx$$
 
-Integrate:
+#### Integrate:
 
 $$\frac{6}{n(n-1)(n-2)} \left[-\frac{x^3}{3} + \frac{(n+1)n^2}{2} - nx\right]_{n/4}^{3n/4}$$
 
 - Upper ($x=3n/4$): $-\frac{(3n/4)^3}{3} + \frac{(n+1)(3n/4)^2}{2} - n(\frac{3n}{4})$
 - Lower ($x=n/4$): $-\frac{(n/4)^3}{3} + \frac{(n+1)(n/4)^2}{2} - n(\frac{n}{4})$
 
-Simplify:
+#### Simplify:
 
 - Upper (simplified): $-\frac{9n^3}{64} + \frac{9(n+1)n^2}{32} - \frac{3n^2}{4}$
 - Lower (simplified): $-\frac{(n/4)^3}{3} + \frac{(n+1)(n/4)^2}{2} - \frac{n^2}{4}$
-
-Plug in Upper and Lower:
+\
+#### Plug in Upper and Lower:
 
 $$\frac{6}{n(n-1)(n-2)} (Upper - Lower)$$
 
 $$\frac{6}{n(n-1)(n-2)} (-\frac{9n^3}{64} + \frac{9(n+1)n^2}{32} - \frac{3n^2}{4} +\frac{(n/4)^3}{3} - \frac{(n+1)(n/4)^2}{2} + \frac{n^2}{4})$$
 
-Simplify:
+#### Simplify:
+
+$$\frac{6}{n(n-1)(n-2)} (-\frac{13n^3}{96} + \frac{(n+1)n^2}{4} + \frac{n^2}{2})$$
 
 $$\frac{6(-\frac{13n^3}{96} + \frac{(n+1)n^2}{4} + \frac{n^2}{2})}{n(n-1)(n-2)}$$
 
-Analyzing what happens as $n$ approaches $\infty$:
+#### Analyzing what happens as $n$ approaches infinity:
 
 $$\lim_{x \to \infty} \frac{6(-\frac{13n^3}{96} + \frac{(n+1)n^2}{4} + \frac{n^2}{2})}{n(n-1)(n-2)} = \frac{11}{16}$$
 
-As $n$ approaches infinity, we can see that it approaches a constant factor of $\frac{11}{16}$ which is greater than $\frac{1}{2}$. The reason why it is important that this constant is greater than $\frac{1}{2}$ is because it shows the median-of-3 truly does have higher odds of being within a "good pivot" range (being within the $\frac{n}{4} \le i \le \frac{3n}{4}$ range of the array) than any randomly chosen element.
+As $n$ approaches infinity, we can see that it approaches a constant factor of $\frac{11}{16}$ which is greater than $\frac{1}{2}$. The reason why it is important that this constant is greater than $\frac{1}{2}$ is because it shows that the median-of-3 truly does have higher odds of being within a "good pivot" range (being within the $\frac{n}{4} \le i \le \frac{3n}{4}$ range of the array) than any randomly chosen element.
 
 
 # Sources
